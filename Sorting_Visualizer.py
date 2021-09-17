@@ -76,6 +76,7 @@ def main():
     RUNNINGTXT = MYFONT.render('Sorting!!!  Please wait until the end :)', False, (0, 0, 0))
     RETRYTXT = MYFONT.render('Finished!!! To try again press 6! :)', False, (0, 0, 0))
     ENDTXT = MYFONT.render('To Quit press 5! :)', False, (0, 0, 0))
+    runned = False
     while toSort:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
