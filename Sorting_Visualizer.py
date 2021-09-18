@@ -3,9 +3,10 @@ from pygame.locals import*
 import pygame.freetype
 import random
 
-TIME = 120
-WIDTH = 2
-SIZE = 200
+
+TIME = 100
+WIDTH = 3
+SIZE = 120
 width = 1000
 height = 500
 BACKGROUND = (255, 255, 255)
@@ -13,14 +14,14 @@ Color_line=(0, 0, 255)
 CLOCK = pygame.time.Clock()
          
     
-    
+#Printing Functions   
 def Display(screen,arr,size,font):
     screen.fill(BACKGROUND)
     
-    QuickSortTXT = font.render('For QuickSort press 1', False, (0, 0, 0))
-    MergeSortTXT = font.render('For MergeSort press 2', False, (0, 0, 0))
-    BubbleSortTXT = font.render('For BubbleSort press 3', False, (0, 0, 0))
-    InsertionSortTXT = font.render('For InsertionSort press 4', False, (0, 0, 0))
+    QuickSortTXT = font.render('To QuickSort press 1', False, (0, 0, 0))
+    MergeSortTXT = font.render('To MergeSort press 2', False, (0, 0, 0))
+    BubbleSortTXT = font.render('To BubbleSort press 3', False, (0, 0, 0))
+    InsertionSortTXT = font.render('To InsertionSort press 4', False, (0, 0, 0))
     QUITTXT = font.render('To Quit press 5', False, (0, 0, 0))
     REGENERATETXT = font.render('To Regenerate another graph press 6', False, (0, 0, 0))
     screen.blit(QuickSortTXT,(3,3))
@@ -32,24 +33,10 @@ def Display(screen,arr,size,font):
     pygame.display.flip()
     printArr(screen,arr,Color_line)
     
-
-
-def GenerateRandArray():
-    arr = []
-    for i in range(0,SIZE):
-        arr.append(random.randrange(1,400))
-    return arr    
-
-def GeneratePosArray():
-    arr = []
-    for i in range(0,SIZE):
-        arr.append(60+(4*i))
-    return arr
-
 def printArr(screen,arr,color,start=0):
     for i in range(0,len(arr)):
         startingIndex = start + i
-        pygame.draw.line(screen,color,(60 + 4*startingIndex,500-arr[i]),(60 + 4*startingIndex,500),WIDTH)
+        pygame.draw.line(screen,color,(60 + WIDTH*2*startingIndex,500-arr[i]),(60 + WIDTH*2*startingIndex,500),WIDTH)
     pygame.display.flip()
 
 def printCell(screen,Cell,Pos,color):
@@ -62,62 +49,24 @@ def printCell(screen,Cell,Pos,color):
 
 
 
-def main():
-    pygame.init()
-    pygame.font.init()
-    MYFONT = pygame.font.SysFont('freesansbold.ttf', 30)
-    screen=pygame.display.set_mode((width,height))
-    pygame.display.set_caption('Sorting Visualizer Algorithm')
-    pygame.display.flip()
-    arr = GenerateRandArray()
-    posArr = GeneratePosArray()
-    Display(screen,arr,Color_line,MYFONT)
-    toSort = True
-    RUNNINGTXT = MYFONT.render('Sorting!!!  Please wait until the end :)', False, (0, 0, 0))
-    RETRYTXT = MYFONT.render('Finished!!! To try again press 6! :)', False, (0, 0, 0))
-    ENDTXT = MYFONT.render('To Quit press 5! :)', False, (0, 0, 0))
-    runned = False
-    while toSort:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                 pygame.quit()
-            if event.type == pygame.KEYDOWN:
 
-                if event.key == pygame.K_1 or event.key == pygame.K_2 or event.key == pygame.K_3 or event.key == pygame.K_4:
-                    screen.fill(BACKGROUND)
-                    printArr(screen,arr,Color_line)
-                    screen.blit(RUNNINGTXT,(300,3))
-                    runned = True
-                  
-                if event.key == pygame.K_1:
-                    QuickSort(screen,arr,posArr,0,SIZE-1)
+#Generating arrays Functions
+def GenerateRandArray():
+    arr = []
+    for i in range(0,SIZE):
+        arr.append(random.randrange(1,400))
+    return arr    
 
-                if event.key == pygame.K_2:
-                    MergeSort(screen,arr,posArr)
+def GeneratePosArray():
+    arr = []
+    for i in range(0,SIZE):
+        arr.append(60+(WIDTH*2*i))
+    return arr
 
-                if event.key == pygame.K_3:
-                    BubbleSort(screen,arr,posArr)
 
-                if event.key == pygame.K_4:
-                    InsertionSort(screen,arr,posArr)
 
-                if event.key == pygame.K_5:
-                    toSort = False
 
-                if runned:
-                    screen.fill(BACKGROUND)
-                    screen.blit(RETRYTXT,(3,3))
-                    screen.blit(ENDTXT,(3,40))
-                    printArr(screen,arr,Color_line)
-                    pygame.display.flip()
-                    runned = False
-
-                if event.key == pygame.K_6:
-                    arr = GenerateRandArray()
-                    posArr = GeneratePosArray()
-                    Display(screen,arr,Color_line,MYFONT)
-
-               
+            
 
 
 
@@ -196,10 +145,6 @@ def QuickSort(screen,arr,posArr,start,end):
 
 
 
-
-
-
-
 #MergeSort section
 def MergeSort(screen,arr,posArr):
     if len(arr) > 1:
@@ -245,8 +190,72 @@ def MergeSort(screen,arr,posArr):
             k += 1
             printCell(screen,arr[k-1],posArr[k-1],Color_line)
             CLOCK.tick(TIME)
+
+
+
+
+
+
             
+#Main function
+def main():
+    pygame.init()
+    pygame.font.init()
+    MYFONT = pygame.font.SysFont('freesansbold.ttf', 30)
+    screen=pygame.display.set_mode((width,height))
+    pygame.display.set_caption('Sorting Visualizer Algorithm')
+    pygame.display.flip()
+    arr = GenerateRandArray()
+    posArr = GeneratePosArray()
+    Display(screen,arr,Color_line,MYFONT)
+    toSort = True
+    RUNNINGTXT = MYFONT.render('Sorting!!!  Please wait until the end :)', False, (0, 0, 0))
+    RETRYTXT = MYFONT.render('Finished!!! To try again press 6! :)', False, (0, 0, 0))
+    ENDTXT = MYFONT.render('To Quit press 5! :)', False, (0, 0, 0))
+    runned = False
+    while toSort:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                 pygame.quit()
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_1 or event.key == pygame.K_2 or event.key == pygame.K_3 or event.key == pygame.K_4:
+                    screen.fill(BACKGROUND) #if the User chose to sort, Running messege is appeared
+                    printArr(screen,arr,Color_line)
+                    screen.blit(RUNNINGTXT,(300,3))
+                    runned = True
+                  
+                if event.key == pygame.K_1: #User wants to QuickSort
+                    QuickSort(screen,arr,posArr,0,SIZE-1)
+
+                if event.key == pygame.K_2: #User wants to MergeSort
+                    MergeSort(screen,arr,posArr)
+
+                if event.key == pygame.K_3: #User wants to BubbleSort
+                    BubbleSort(screen,arr,posArr)
+
+                if event.key == pygame.K_4: #User wants to InsertionSort
+                    InsertionSort(screen,arr,posArr)
+
+                if event.key == pygame.K_5: #User wants to Quit
+                    toSort = False
 
 
+                if event.key == pygame.K_6: #User wants a new Try
+                    arr = GenerateRandArray()
+                    posArr = GeneratePosArray()
+                    Display(screen,arr,Color_line,MYFONT)
+
+                if runned: #if finnished Sorted, a new messege is appeared
+                    screen.fill(BACKGROUND)
+                    screen.blit(RETRYTXT,(3,3))
+                    screen.blit(ENDTXT,(3,40))
+                    printArr(screen,arr,Color_line)
+                    pygame.display.flip()
+                    runned = False
+
+                
+
+   
 
 main()
